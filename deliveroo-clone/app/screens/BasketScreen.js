@@ -67,7 +67,7 @@ const BasketScreen = () => {
                         <Text className="flex-1">{items[0]?.name}</Text>
 
                         <Text className="text-gray-600">
-                            <Currency quantity={items[0]?.price} currency="GBP" />
+                            <Currency quantity={items[0]?.price} currency="BRL" />
                         </Text>
 
                         <TouchableOpacity> 
@@ -82,21 +82,21 @@ const BasketScreen = () => {
             <View className="flex-row justify-between">
                 <Text className="text-gray-400">Subtotal</Text>
                 <Text className="text-gray-400">
-                    <Currency quantity={total} currency="GBP" />
+                    <Currency quantity={total} currency="BRL" />
                 </Text>
             </View>
 
             <View className="flex-row justify-between">
                 <Text className="text-gray-400">Delivery Fee</Text>
                 <Text className="text-gray-400">
-                    <Currency quantity={5.99} currency="GBP" />
+                    <Currency quantity={5.99} currency="BRL" />
                 </Text>
             </View>
 
             <View className="flex-row justify-between">
                 <Text>Order Total</Text>
                 <Text className="font-extrabold">
-                    <Currency quantity={total + 5.99} currency="GBP" />
+                    <Currency quantity={total + 5.99} currency="BRL" />
                 </Text>
             </View>
 
