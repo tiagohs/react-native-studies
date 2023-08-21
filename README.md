@@ -4,6 +4,8 @@ This repository have some apps that i did with the Sonny Sangha Channel, from th
 
 ## Deliveroo-clone
 
+<img src="https://raw.githubusercontent.com/tiagohs/react-native-studies/main/images/deliveroo-logo.png" height="200">
+
 - Expo
 - React Native
 - React Native Navigation for navigation
@@ -16,6 +18,8 @@ This repository have some apps that i did with the Sonny Sangha Channel, from th
 
 ## Tinder Clone
 
+<img src="https://raw.githubusercontent.com/tiagohs/react-native-studies/main/images/tinder-logo.png" height="200">
+
 - Expo
 - React Native
 - React Native Navigation for navigation
@@ -26,6 +30,8 @@ This repository have some apps that i did with the Sonny Sangha Channel, from th
     - Firestore
 
 ## Uber Clone
+
+<img src="https://raw.githubusercontent.com/tiagohs/react-native-studies/main/images/uber-logo.png" height="200">
 
 - Expo
 - React Native
