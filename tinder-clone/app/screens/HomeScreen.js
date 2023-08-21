@@ -8,8 +8,9 @@ import {
 } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper'
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
+import { DocumentSnapshot, collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { db } from '../../firebaseConfig';
+import generateId from '../../lib/generateId';
 
 const DUMMY_DATA = [
   {
@@ -75,13 +76,13 @@ const HomeScreen = () => {
     const fetchCards = async () => {
       const passes = await getDocs(collection(db, 'users', user.uid, 'passes')).then(snapshot => snapshot.docs.map(doc => doc.id));
       const swipes = await getDocs(collection(db, 'users', user.uid, 'swipes')).then(snapshot => snapshot.docs.map(doc => doc.id));
-      
+
       const passedUserIds = passes.length > 0 ? passes : ['test'];
       const swipesUserIds = swipes.length > 0 ? swipes : ['test'];
 
       unsub = onSnapshot(
         query(
-          collection(db, 'users'), 
+          collection(db, 'users'),
           where('id', 'not-in', [...passedUserIds, ...swipesUserIds])
         ), snapshot => {
           setProfiles(
@@ -113,8 +114,33 @@ const HomeScreen = () => {
     if (!profiles[cardIndex]) return
 
     const userSwiped = profiles[cardIndex];
+    const loggedInProfile = await (await getDoc(doc(db, 'users', user.uid))).data();
 
-    setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
+    getDoc(doc(db, 'users', userSwiped.id, 'swipes', user.uid)).then(documentSnapshot => {
+      if (documentSnapshot.exists()) {
+        // user match with you before you matched with them...
+        setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
+
+        // CREATE A MATCH
+        setDoc(doc(db, 'matches', generateId(user.uid, userSwiped.id)), {
+          users: {
+            [user.uid]: loggedInProfile,
+            [userSwiped.id] : userSwiped
+          },
+          usersMatched: [user.uid, userSwiped.id],
+          timestamp: serverTimestamp()
+        })
+
+        navigation.navigate('Match', {
+          loggedInProfile,
+          userSwiped
+        });
+      } else {
+        setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped)
+      }
+    })
+
+    
   }
 
   return (
